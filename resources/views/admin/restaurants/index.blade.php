@@ -1,3 +1,5 @@
+<h1>Restaurantes</h1>
+<a href="{{route('restaurant.new')}}">Novo</a>
 <table>
     <thead>
         <tr>
@@ -25,3 +27,4 @@
         @endforeach
     </tbody>
 </table>
+
