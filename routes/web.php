@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\RestaurantController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -16,3 +17,7 @@ Route::prefix('admin')->group(function(){
     Route::put('restaurants/update/{restaurant}', [RestaurantController::class, 'update'])->name('restaurant.update');
     Route::delete('restaurants/destroy/{restaurant}', [RestaurantController::class, 'destroy'])->name('restaurant.destroy');
 });
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
