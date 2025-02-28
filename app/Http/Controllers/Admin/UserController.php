@@ -38,8 +38,8 @@ class UserController extends Controller
     {
         $userData = $request->all();
 
-        $validator = $request->validated();
-
+        $request->validated();
+        $userData['password'] = bcrypt($userData['password']);
         $user = new User();
         $user->create($userData);
 
@@ -68,6 +68,9 @@ class UserController extends Controller
     public function update(UserRequest $request, User $user)
     {
         $userData = $request->all();
+        if ($userData['password']) {
+            $userData['password'] = bcrypt($request->password);
+        }
         $user->update($userData);
 
         return redirect()->route('user.index')->with('success', 'Usuário Editado com sucesso!');
