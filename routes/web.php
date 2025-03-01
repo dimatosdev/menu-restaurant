@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\RestaurantController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Auth;
@@ -26,6 +27,14 @@ Route::group(['middleware' => ['auth']], function(){
             Route::get('edit/{user}', [UserController::class, 'edit'])->name('user.edit');
             Route::put('update/{user}', [UserController::class, 'update'])->name('user.update');
             Route::delete('destroy{user}', [UserController::class, 'destroy'])->name('user.destroy');
+        });
+        Route::prefix('menus')->group(function(){
+            Route::get('/', [MenuController::class, 'index'])->name('menu.index');
+            Route::get('new', [MenuController::class, 'new'])->name('menu.new');
+            Route::post('store', [MenuController::class, 'store'])->name('menu.store');
+            Route::get('edit/{menu}', [MenuController::class, 'edit'])->name('menu.edit');
+            Route::put('update/{menu}', [MenuController::class, 'update'])->name('menu.update');
+            Route::delete('destroy/{menu}', [MenuController::class, 'destroy'])->name('menu.destroy');
         });
     });
 
