@@ -43,3 +43,10 @@ Route::group(['middleware' => ['auth']], function(){
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('rel', function(){
+    $restaurant = App\Models\Restaurant::find(1);
+    foreach($restaurant->menus as $menu){
+        echo $menu->name . '<br>';
+    }
+});

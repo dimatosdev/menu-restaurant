@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MenuRequest;
 use App\Models\Menu;
+use App\Models\Restaurant;
 use Illuminate\Http\Request;
 
 class MenuController extends Controller
@@ -28,7 +29,8 @@ class MenuController extends Controller
 
     public function new()
     {
-        return view('admin.menus.store');
+        $restaurants = Restaurant::all(['id', 'name']);
+        return view('admin.menus.store', compact('restaurants'));
     }
 
     /**
@@ -38,12 +40,11 @@ class MenuController extends Controller
     {
         $menuData = $request->all();
 
-        $validator = $request->validated();
+        $restaurant = Restaurant::find($menuData['restaurant_id']);
+        $restaurant->menus()->create($menuData);
 
-        $menu = new Menu();
-        $menu->create($menuData);
 
-        return redirect()->route('menus.index')->with('success', 'Restaurante criado com sucesso!');
+        return redirect()->route('menu.index')->with('success', 'Restaurante criado com sucesso!');
     }
 
     /**
@@ -59,7 +60,9 @@ class MenuController extends Controller
      */
     public function edit(Menu $menu)
     {
-        return view('admin.menus.edit', compact('menu'));
+        $restaurants = Restaurant::all(['id', 'name']);
+
+        return view('admin.menus.edit', compact('menu', 'restaurants'));
     }
 
     /**
@@ -68,9 +71,12 @@ class MenuController extends Controller
     public function update(MenuRequest $request, Menu $menu)
     {
         $restaurantData = $request->all();
+        $menu = Menu::find($menu->id);
+        $menu->restaurant()->associate($restaurantData['restaurant_id']);
         $menu->update($restaurantData);
 
-        return redirect()->route('menus.index')->with('success', 'Restaurante Editado com sucesso!');
+
+        return redirect()->route('menu.index')->with('success', 'Restaurante Editado com sucesso!');
     }
 
     /**
@@ -81,7 +87,7 @@ class MenuController extends Controller
     {
         $menu->delete();
 
-        return redirect()->route('menus.index')->with('success', 'Restaurante deletado com sucesso!');
+        return redirect()->route('menu.index')->with('success', 'Restaurante deletado com sucesso!');
     }
 
 }

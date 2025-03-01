@@ -31,6 +31,22 @@
                 <span class="invalid-feedback">{{ $errors->first('price') }}</span>
             @endif
         </p>
+        <p>
+            <label for="restaurant_id">Restaurante</label><br>
+            <select name="restaurant_id" class="form-control @if($errors->has('restaurant_id')) is-invalid @endif">
+                <option value="">Selecione um restaurante</option>
+                @foreach($restaurants as $restaurant)
+                    <option value="{{ $restaurant->id }}" {{ old('restaurant_id') == $restaurant->id ? 'selected' : '' }}>
+                        {{ $restaurant->name }}
+                    </option>
+                @endforeach
+            </select>
+            @if($errors->has('restaurant_id'))
+                <br>
+                <span class="invalid-feedback">{{ $errors->first('restaurant_id') }}</span>
+            @endif
+        </p>
+
         <input type="submit" value="Cadastrar" class="btn btn-success btn-lg">
     </form>
 </div>
